@@ -1,7 +1,4 @@
 const pgp = require('pg-promise')();
-const dotenv = require('dotenv');
-dotenv.config();
-
 
 const db = pgp({
   host: process.env.DB_SERVER,
@@ -20,11 +17,14 @@ const port = process.env.PORT || 3000;
 const router = express.Router();
 router.use(express.json());
 
-app.use(router);
-app.listen(port, () => console.log(`Listening on port ${port}`));
-
+router.get('/', readHelloMessage);
+router.get('/users', readUsers);
+router.get('/events', readEvents);
 router.post('/users', createUser);
 router.post('/events', createEvent);
+
+app.use(router);
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // Implement the CRUD operations.
 
@@ -34,6 +34,30 @@ function returnDataOr404(res, data) {
   } else {
     res.send(data);
   }
+}
+
+function readHelloMessage(req, res) {
+  res.send('Hello, CS 262 funteam service!');
+}
+
+function readUsers(req, res, next) {
+  db.many('SELECT * FROM User')
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function readEvents(req, res, next) {
+  db.many('SELECT * FROM Events')
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
 }
 
   function createUser(req, res, next) {
