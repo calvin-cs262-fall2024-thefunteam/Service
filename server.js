@@ -21,10 +21,10 @@ const router = express.Router();
 router.use(express.json());
 
 router.get('/', readHelloMessage);
-// router.get('/users', readUsers);
-// router.get('/events', readEvents);
-// router.post('/users', createUser);
-// router.post('/events', createEvent);
+router.get('/users', readUsers);
+router.get('/events', readEvents);
+router.post('/users', createUser);
+router.post('/events', createEvent);
 
 app.use(router);
 app.listen(port, () => console.log(`Listening on port ${port}`));
