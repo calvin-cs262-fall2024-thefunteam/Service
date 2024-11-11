@@ -73,6 +73,7 @@ function readEvents(req, res, next) {
         next(err);
       });
   }
+  
 
   function createEvent(req, res, next) {
     const { name, location, date, time, description, organizerID, tagsID } = req.body;
