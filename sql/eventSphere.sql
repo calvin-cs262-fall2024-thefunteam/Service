@@ -56,8 +56,8 @@ INSERT INTO Tags (color, label) VALUES ('#FF6347', 'Workshop');
 -- Insert sample Events
 INSERT INTO Events (name, location, date, time, description, organizerID) VALUES
 ('Sample Event 1', 'Location 1', '2021-01-01', '12:00:00', 'Description for Sample Event 1', 1),
-('Sample Event 2', 'Location 2', '2021-01-02', '13:00:00', 'Description for Sample Event 2', 2),
-('Sample Event 3', 'Location 3', '2021-01-03', '14:00:00', 'Description for Sample Event 3', 3),
+('Sample Event 2', 'Location 2', '2021-01-02', '13:00:00', 'Description for Sample Event 2 Very long adfajdfkas flksahf kashf lkas hfaslkf baslkfbsalk fhaskljf lhsajkf askjfh sakjfh askjlfh askljfhaksl j hfaskjhf askjfh sakjfhaskjfh askjfh askjhf askj hfaskljfh askljfh asjkfh asjkfhaskjf haskjf haskl jh', 2),
+('Sample Event 3', 'Location 3', '2021-01-03', '14:00:00', 'According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? ', 3),
 ('Sample Event 4', 'Location 4', '2021-01-04', '15:00:00', 'Description for Sample Event 4', 3);
 
 -- Associate Events with Tags in the EventsTags join table
