@@ -21,6 +21,7 @@ app.get('/', (req, res) => res.send('Hello, CS 262 funteam service!'));
 app.get('/users', readUsers);
 app.get('/events', readEvents); // Simple SELECT *
 app.get('/events/formatted', readEventsWithTags); // Events with nested tags
+add.get('/events/:id/tags', readEventTags);
 app.post('/users', createUser);
 app.post('/events', createEvent);
 
@@ -41,44 +42,17 @@ function readEvents(req, res, next) {
     .catch(next);
 }
 
-// Retrieve events with tags formatted (nested tags for each event)
-function readEventsWithTags(req, res, next) {
-  db.any(`
-    SELECT e.*, t.label AS tag_label, t.color AS tag_color
-    FROM Events e
-    LEFT JOIN EventsTags et ON e.ID = et.eventID
-    LEFT JOIN Tags t ON et.tagID = t.ID
-  `)
-    .then((data) => {
-      const events = {};
-      data.forEach((row) => {
-        if (!events[row.id]) {
-          events[row.id] = {
-            id: row.id,
-            name: row.name,
-            location: row.location,
-            date: row.date,
-            time: row.time,
-            description: row.description,
-            organizerID: row.organizerid,
-            tags: [],
-          };
-        }
-        if (row.tag_label && row.tag_color) {
-          events[row.id].tags.push({
-            label: row.tag_label,
-            color: row.tag_color,
-          });
-        }
-      });
-      returnDataOr404(res, Object.values(events));
-    })
-    .catch(next);
-}
-
 // Retrieve users
 function readUsers(req, res, next) {
   db.manyOrNone('SELECT * FROM Account')
+    .then((data) => returnDataOr404(res, data))
+    .catch(next);
+}
+
+// Retrieve tags for event id 
+function readEventTags(req, res, next) {
+  const eventID = parseInt(req.params.id);
+  db.manyOrNone('SELECT tagID FROM EventsTags WHERE eventID = $1', eventID)
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
