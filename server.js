@@ -21,9 +21,9 @@ app.get('/', (req, res) => res.send('Hello, CS 262 funteam service!'));
 //Read/ Get
 app.get('/users', readUsers);               // Retrieve all users
 app.get('/events', readEvents);             // Retrieve all events
-app.get('/events/:id/tags', readEventTags); // Retrieve tags for a single event by ID
-app.get('/tags', readTags);                 // Retrieve all predefined tags
 app.get('/events/:id', readEvent);          // Retrieve a single event by ID
+// app.get('/events/:id/tags', readEventTags); // Retrieve tags for a single event by ID
+// app.get('/tags', readTags);                 // Retrieve all predefined tags
 
 //Create/ Post
 app.post('/users', createUser);
@@ -57,30 +57,30 @@ function readUsers(req, res, next) {
 }
 
 // Retrieve tags
-function readTags(req, res, next) {
-  db.manyOrNone('SELECT * FROM Tags')
-    .then((data) => returnDataOr404(res, data))
-    .catch(next);
-}
+// function readTags(req, res, next) {
+//   db.manyOrNone('SELECT * FROM Tags')
+//     .then((data) => returnDataOr404(res, data))
+//     .catch(next);
+// }
 
-function readEvent(req, res, next) {
-  db.oneOrNone('SELECT * FROM Events WHERE id=${id}', req.params)
-    .then((data) => {
-      returnDataOr404(res, data);
-    })
-    .catch((err) => {
-      next(err);
-    });
-}
+// function readEvent(req, res, next) {
+//   db.oneOrNone('SELECT * FROM Events WHERE id=${id}', req.params)
+//     .then((data) => {
+//       returnDataOr404(res, data);
+//     })
+//     .catch((err) => {
+//       next(err);
+//     });
+// }
 
 
 // Retrieve tags for event id 
-function readEventTags(req, res, next) {
-  const eventID = parseInt(req.params.id);
-  db.manyOrNone('SELECT tagID FROM EventsTags WHERE eventID = $1', eventID)
-    .then((data) => returnDataOr404(res, data))
-    .catch(next);
-}
+// function readEventTags(req, res, next) {
+//   const eventID = parseInt(req.params.id);
+//   db.manyOrNone('SELECT tagID FROM EventsTags WHERE eventID = $1', eventID)
+//     .then((data) => returnDataOr404(res, data))
+//     .catch(next);
+// }
 
 // Create user
 function createUser(req, res, next) {
