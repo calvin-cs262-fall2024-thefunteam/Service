@@ -95,21 +95,13 @@ function createUser(req, res, next) {
 
 // Create event with tags
 function createEvent(req, res, next) {
-  const { name, location, date, time, description, organizerID, tags } = req.body;
-
-  db.one(
-    'INSERT INTO Events(name, location, date, time, description, organizerID) VALUES(${name}, ${location}, ${date}, ${time}, ${description}, ${organizerID}) RETURNING id',
-    { name, location, date, time, description, organizerID }
+  const { name, location, date, time, description, organizerID, tagsArray } = req.body;
+  db.none(
+    'INSERT INTO Events(name, location, date, time, description, organizerID, tagsArray) VALUES(${name}, ${location}, ${date}, ${time}, ${description}, ${organizerID}, ${tagsArray})',
+    { name, location, date, time, description, organizerID, tagsArray }
   )
-    .then((event) => {
-      if (tags && tags.length > 0) {
-        const tagQueries = tags.map((tagID) => ({
-          query: 'INSERT INTO EventsTags(eventID, tagID) VALUES($1, $2)',
-          values: [event.id, tagID],
-        }));
-        return db.tx((t) => t.batch(tagQueries.map((q) => t.none(q.query, q.values))));
-      }
-    })
-    .then(() => res.status(201).send({ message: 'Event and tags created successfully.' }))
-    .catch(next);
+  .then(() => {
+    res.status(201).send({ message: 'Event created successfully.' });
+  })
+  .catch(next);
 }
