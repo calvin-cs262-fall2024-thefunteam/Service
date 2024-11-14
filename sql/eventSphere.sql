@@ -1,5 +1,5 @@
 -- Drop tables if they already exist to avoid conflicts
-DROP TABLE IF EXISTS EventsTags;
+DROP TABLE IF EXISTS Account;
 DROP TABLE IF EXISTS Events;
 
 -- Create Account table
@@ -31,10 +31,6 @@ INSERT INTO Account (Accountname, password, name) VALUES ('Account1', 'password1
 INSERT INTO Account (Accountname, password, name) VALUES ('Account2', 'password2', 'name 2');
 INSERT INTO Account (Accountname, password, name) VALUES ('Account3', 'password3', 'name 3');
 
--- Insert sample Tags
-INSERT INTO Tags (color, label) VALUES ('#FFD700', 'Social');
-INSERT INTO Tags (color, label) VALUES ('#32CD32', 'Networking');
-INSERT INTO Tags (color, label) VALUES ('#FF6347', 'Workshop');
 
 -- Insert sample Events
 INSERT INTO Events (name, location, date, time, description, tagsArray, organizerID) VALUES
