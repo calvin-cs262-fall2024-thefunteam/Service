@@ -56,32 +56,16 @@ function readUsers(req, res, next) {
     .catch(next);
 }
 
-// Retrieve tags
-// function readTags(req, res, next) {
-//   db.manyOrNone('SELECT * FROM Tags')
-//     .then((data) => returnDataOr404(res, data))
-//     .catch(next);
-// }
 
-// function readEvent(req, res, next) {
-//   db.oneOrNone('SELECT * FROM Events WHERE id=${id}', req.params)
-//     .then((data) => {
-//       returnDataOr404(res, data);
-//     })
-//     .catch((err) => {
-//       next(err);
-//     });
-// }
-
-
-// Retrieve tags for event id 
-// function readEventTags(req, res, next) {
-//   const eventID = parseInt(req.params.id);
-//   db.manyOrNone('SELECT tagID FROM EventsTags WHERE eventID = $1', eventID)
-//     .then((data) => returnDataOr404(res, data))
-//     .catch(next);
-// }
-
+function readEvent(req, res, next) {
+  db.oneOrNone('SELECT * FROM Events WHERE id=${id}', req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
 // Create user
 function createUser(req, res, next) {
   const { Accountname, password, name } = req.body;
