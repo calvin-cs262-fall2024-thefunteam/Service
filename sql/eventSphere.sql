@@ -1,6 +1,6 @@
 -- Drop tables if they already exist to avoid conflicts
-DROP TABLE IF EXISTS Account;
 DROP TABLE IF EXISTS Events;
+DROP TABLE IF EXISTS Account;
 
 -- Create Account table
 CREATE TABLE Account (
@@ -33,8 +33,8 @@ INSERT INTO Account (Accountname, password, name) VALUES ('jane_smith', 'passwor
 INSERT INTO Account (Accountname, password, name) VALUES ('alice_jones', 'password789', 'Alice Jones');
 
 -- Insert sample Events
-INSERT INTO Events (name, location, date, description, tagsArray, organizerID) VALUES
-('Tech Conference 2021', 'New York', '2021-09-15', 'A conference about the latest in technology.', ARRAY[1,2], 1),
-('Music Festival', 'Los Angeles', '2021-10-10', 'A festival featuring various music artists.', ARRAY[2,3], 2),
-('Art Exhibition', 'San Francisco', '2021-11-05', 'An exhibition showcasing modern art.', ARRAY[3,4], 3),
-('Startup Pitch Night', 'Boston', '2021-12-01', 'An event where startups pitch their ideas to investors.', ARRAY[5], 3);
+INSERT INTO Events (name, organizer, date, description, tagsArray, location, organizerID) VALUES
+('Tech Conference 2021', 'John Doe', '2021-09-15', 'A conference about the latest in technology.', ARRAY[1,2], 'New York', 1),
+('Music Festival', 'Jane Smith', '2021-10-10', 'A festival featuring various music artists.', ARRAY[2,3], 'Los Angeles', 2),
+('Art Exhibition', 'Alice Jones', '2021-11-05', 'An exhibition showcasing modern art.', ARRAY[3,4], 'San Francisco', 3),
+('Startup Pitch Night', 'Alice Jones', '2021-12-01', 'An event where startups pitch their ideas to investors.', ARRAY[5], 'Boston', 3);
