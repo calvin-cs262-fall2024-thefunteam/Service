@@ -79,7 +79,7 @@ function createUser(req, res, next) {
 // Create event with tags
 function createEvent(req, res, next) {
   db.none(
-    "INSERT INTO Events(name, location, date, description, organizerID, tagsArray) VALUES(${name}, ${location}, ${date}, ${description}, ${organizerID}, ${tagsArray})",req.body)
+    "INSERT INTO Events(name, location, organizer, date, description, organizerid, tagsArray) VALUES(${name}, ${location}, ${organizer}, ${date}, ${description}, ${organizerid}, ${tagsArray})",req.body)
     .then(() => {
       res.status(201).send({ message: "Event created successfully." });
     })
