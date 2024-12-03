@@ -30,8 +30,12 @@ app.post("/users", createUser);
 app.post("/events", createEvent);
 
 // Update/ Put
+app.put("/events/:id", editEvent); // Update a single event by ID
 
 // Delete
+app.delete("/events/:id", deleteEvent); // Delete a single event by ID
+
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 function returnDataOr404(res, data) {
@@ -83,5 +87,20 @@ function createEvent(req, res, next) {
     .then(() => {
       res.status(201).send({ message: "Event created successfully." });
     })
+    .catch(next);
+}
+
+function deleteEvent(req, res, next) {
+  db.none("DELETE FROM Events WHERE id=${id}", req.params)
+    .then(() => res.status(200).send({ message: "Event deleted successfully." }))
+    .catch(next);
+}
+
+function editEvent(req, res, next) {
+  db.none(
+    "UPDATE Events SET name=${name}, location=${location}, organizer=${organizer}, date=${date}, description=${description}, organizerid=${organizerid}, tagsArray=${tagsArray} WHERE id=${id}",
+    req.body
+  )
+    .then(() => res.status(200).send({ message: "Event updated successfully." }))
     .catch(next);
 }
