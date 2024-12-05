@@ -28,6 +28,7 @@ app.get("/events/:id", readEvent); // Retrieve a single event by ID
 //Create/ Post
 app.post("/users", createUser);
 app.post("/events", createEvent);
+app.post("/users", createUser); // Create a new user
 
 // Update/ Put
 app.put("/events/:id", editEvent); // Update a single event by ID
@@ -71,7 +72,6 @@ function readEvent(req, res, next) {
 }
 // Create user
 function createUser(req, res, next) {
-  const { Accountname, password, name } = req.body;
   db.none(
     "INSERT INTO Account(Accountname, password, name) VALUES(${Accountname}, ${password}, ${name})",
     req.body
