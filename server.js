@@ -24,6 +24,7 @@ app.get("/events", readEvents); // Retrieve all events
 app.get("/events/:id", readEvent); // Retrieve a single event by ID
 // app.get('/events/:id/tags', readEventTags); // Retrieve tags for a single event by ID
 // app.get('/tags', readTags);                 // Retrieve all predefined tags
+app.get("/users/:Accountname/:password", login); // Login
 
 //Create/ Post
 app.post("/users", createUser);
@@ -32,6 +33,9 @@ app.post("/users", createUser); // Create a new user
 
 // Update/ Put
 app.put("/events/:id", editEvent); // Update a single event by ID
+app.put("/users/:Accountname/password", changePassword); // Change password
+app.put("/users/:Accountname/name", changeName); // Change name
+app.put("/users/:Accountname/accountname", changeAccountname); // Change accountname
 
 // Delete
 app.delete("/events/:id", deleteEvent); // Delete a single event by ID
@@ -58,6 +62,34 @@ function readEvents(req, res, next) {
 function readUsers(req, res, next) {
   db.manyOrNone("SELECT * FROM Account")
     .then((data) => returnDataOr404(res, data))
+    .catch(next);
+}
+
+function login(req, res, next) {
+  db.oneOrNone("SELECT * FROM Account WHERE Accountname=${Accountname} AND password=${password}", req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function changePassword(req, res, next) {
+  db.none("UPDATE Account SET password=${password} WHERE Accountname=${Accountname}", req.body)
+    .then(() => res.status(200).send({ message: "Password changed successfully." }))
+    .catch(next);
+}
+
+function changeName(req, res, next) {
+  db.none("UPDATE Account SET name=${name} WHERE Accountname=${Accountname}", req.body)
+    .then(() => res.status(200).send({ message: "Name changed successfully." }))
+    .catch(next);
+}
+
+function changeAccountname(req, res, next) {
+  db.none("UPDATE Account SET Accountname=${newAccountname} WHERE Accountname=${Accountname}", req.body)
+    .then(() => res.status(200).send({ message: "Accountname changed successfully." }))
     .catch(next);
 }
 
