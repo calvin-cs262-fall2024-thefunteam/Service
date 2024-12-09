@@ -25,11 +25,13 @@ app.get("/events/:id", readEvent); // Retrieve a single event by ID
 // app.get('/events/:id/tags', readEventTags); // Retrieve tags for a single event by ID
 // app.get('/tags', readTags);                 // Retrieve all predefined tags
 app.get("/users/:Accountname/:password", login); // Login
+app.get("/savedEvents/:accountID", readSavedEvents); // Retrieve all saved events for a user
 
 //Create/ Post
 app.post("/users", createUser);
 app.post("/events", createEvent);
 app.post("/users", createUser); // Create a new user
+app.post("/savedEvents/:accountID/:eventID", saveEvent); // Save an event
 
 // Update/ Put
 app.put("/events/:id", editEvent); // Update a single event by ID
@@ -39,6 +41,8 @@ app.put("/users/:Accountname/accountname", changeAccountname); // Change account
 
 // Delete
 app.delete("/events/:id", deleteEvent); // Delete a single event by ID
+app.delete("/users/:accountID", deleteUser); // Delete a single user by ID
+app.delete("/savedEvents/:accountID/:eventID", deleteSavedEvent); // Unsave an event
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -51,14 +55,48 @@ function returnDataOr404(res, data) {
   }
 }
 
-// Retrieve all events without formatting, just a simple SELECT *
+// Event Functions
 function readEvents(req, res, next) {
   db.manyOrNone("SELECT * FROM Events")
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
 
-// Retrieve users
+function readEvent(req, res, next) {
+  db.oneOrNone("SELECT * FROM Events WHERE id=${id}", req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function createEvent(req, res, next) {
+  db.none(
+    "INSERT INTO Events(name, location, organizer, date, description, organizerid, tagsArray) VALUES(${name}, ${location}, ${organizer}, ${date}, ${description}, ${organizerid}, ${tagsArray})",req.body)
+    .then(() => {
+      res.status(201).send({ message: "Event created successfully." });
+    })
+    .catch(next);
+}
+
+function deleteEvent(req, res, next) {
+  db.none("DELETE FROM Events WHERE id=${id}", req.params)
+    .then(() => res.status(200).send({ message: "Event deleted successfully." }))
+    .catch(next);
+}
+
+function editEvent(req, res, next) {
+  db.none(
+    "UPDATE Events SET name=${name}, location=${location}, organizer=${organizer}, date=${date}, description=${description}, organizerid=${organizerid}, tagsArray=${tagsArray} WHERE id=${id}",
+    req.body
+  )
+    .then(() => res.status(200).send({ message: "Event updated successfully." }))
+    .catch(next);
+}
+
+// Users Functions
 function readUsers(req, res, next) {
   db.manyOrNone("SELECT * FROM Account")
     .then((data) => returnDataOr404(res, data))
@@ -93,15 +131,12 @@ function changeAccountname(req, res, next) {
     .catch(next);
 }
 
-function readEvent(req, res, next) {
-  db.oneOrNone("SELECT * FROM Events WHERE id=${id}", req.params)
-    .then((data) => {
-      returnDataOr404(res, data);
-    })
-    .catch((err) => {
-      next(err);
-    });
+function deleteUser(req, res, next) {
+  db.none("DELETE FROM Account WHERE accountID=${accountID}", req.params)
+    .then(() => res.status(200).send({ message: "User deleted successfully." }))
+    .catch(next);
 }
+
 // Create user
 function createUser(req, res, next) {
   db.none(
@@ -112,27 +147,24 @@ function createUser(req, res, next) {
     .catch(next);
 }
 
-// Create event with tags
-function createEvent(req, res, next) {
+// Save Events
+function saveEvent(req, res, next) {
   db.none(
-    "INSERT INTO Events(name, location, organizer, date, description, organizerid, tagsArray) VALUES(${name}, ${location}, ${organizer}, ${date}, ${description}, ${organizerid}, ${tagsArray})",req.body)
-    .then(() => {
-      res.status(201).send({ message: "Event created successfully." });
-    })
-    .catch(next);
-}
-
-function deleteEvent(req, res, next) {
-  db.none("DELETE FROM Events WHERE id=${id}", req.params)
-    .then(() => res.status(200).send({ message: "Event deleted successfully." }))
-    .catch(next);
-}
-
-function editEvent(req, res, next) {
-  db.none(
-    "UPDATE Events SET name=${name}, location=${location}, organizer=${organizer}, date=${date}, description=${description}, organizerid=${organizerid}, tagsArray=${tagsArray} WHERE id=${id}",
+    "INSERT INTO SavedEvents(accountID, eventID) VALUES(${accountID}, ${eventID})",
     req.body
   )
-    .then(() => res.status(200).send({ message: "Event updated successfully." }))
+    .then(() => res.status(201).send({ message: "Event saved successfully." }))
+    .catch(next);
+}
+
+function readSavedEvents(req, res, next) {
+  db.manyOrNone("SELECT * FROM SavedEvents WHERE accountID=${accountID}", req.params)
+    .then((data) => returnDataOr404(res, data))
+    .catch(next);
+}
+
+function deleteSavedEvent(req, res, next) {
+  db.none("DELETE FROM SavedEvents WHERE accountID=${accountID} AND eventID=${event.ID}", req.params)
+    .then(() => res.status(200).send({ message: "Event unsaved successfully." }))
     .catch(next);
 }
