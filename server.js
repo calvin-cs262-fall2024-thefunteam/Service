@@ -26,7 +26,9 @@ app.get("/events/:id", readEvent); // Retrieve a single event by ID
 // app.get('/events/:id/tags', readEventTags); // Retrieve tags for a single event by ID
 // app.get('/tags', readTags);                 // Retrieve all predefined tags
 app.get("/users/:Accountname/:password", login); // Login
-app.get("/savedEvents/:accountID", readSavedEvents); // Retrieve all saved events for a user
+app.get("/savedEvents/:accountID", readSavedEventsPerUser); // Retrieve all saved events for a user
+
+app.get("/savedEvents", readSavedEvents);
 
 //Create/ Post
 app.post("/users", createUser);
@@ -159,6 +161,12 @@ function saveEvent(req, res, next) {
 }
 
 function readSavedEvents(req, res, next) {
+  db.manyOrNone("SELECT * FROM SavedEvents")
+    .then((data) => returnDataOr404(res, data))
+    .catch(next);
+}
+
+function readSavedEventsPerUser(req, res, next) {
   db.manyOrNone("SELECT * FROM SavedEvents WHERE accountID=${accountID}", req.params)
     .then((data) => returnDataOr404(res, data))
     .catch(next);
