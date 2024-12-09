@@ -1,4 +1,5 @@
 -- Drop tables if they already exist to avoid conflicts
+DROP TABLE IF EXISTS SavedEvents;
 DROP TABLE IF EXISTS Events;
 DROP TABLE IF EXISTS Account;
 
@@ -16,15 +17,24 @@ CREATE TABLE Events (
     name VARCHAR(255) NOT NULL,
     organizer VARCHAR(255) NOT NULL,
     date DATE NOT NULL,
+    time TIME not NULL,
     description TEXT NOT NULL,
     tagsArray INTEGER[] DEFAULT '{}',
     location VARCHAR(255) NOT NULL,
     organizerID INTEGER REFERENCES Account(ID)
 );
 
+-- Create SavedEvents table
+CREATE TABLE SavedEvents (
+    accountID INTEGER REFERENCES Account(ID),
+    eventID INTEGER REFERENCES Events(ID)
+);
+
+
 -- Grant select permissions on all tables to public
 GRANT SELECT ON Account TO public;
 GRANT SELECT ON Events TO public;
+GRANT SELECT ON SavedEvents TO public;
 
 -- Insert sample Accounts
 -- Note: The password will be hashed in the future
