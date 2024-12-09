@@ -22,6 +22,7 @@ app.get("/", (req, res) => res.send("Hello, CS 262 funteam service!"));
 app.get("/users", readUsers); // Retrieve all users
 app.get("/events", readEvents); // Retrieve all events
 app.get("/events/:id", readEvent); // Retrieve a single event by ID
+
 // app.get('/events/:id/tags', readEventTags); // Retrieve tags for a single event by ID
 // app.get('/tags', readTags);                 // Retrieve all predefined tags
 app.get("/users/:Accountname/:password", login); // Login
@@ -31,7 +32,7 @@ app.get("/savedEvents/:accountID", readSavedEvents); // Retrieve all saved event
 app.post("/users", createUser);
 app.post("/events", createEvent);
 app.post("/users", createUser); // Create a new user
-app.post("/savedEvents/:accountID/:eventID", saveEvent); // Save an event
+app.post("/savedEvents/:accountID", saveEvent); // Save an event
 
 // Update/ Put
 app.put("/events/:id", editEvent); // Update a single event by ID
