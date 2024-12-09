@@ -32,7 +32,7 @@ app.get("/savedEvents/:accountID", readSavedEvents); // Retrieve all saved event
 app.post("/users", createUser);
 app.post("/events", createEvent);
 app.post("/users", createUser); // Create a new user
-app.post("/savedEvents/:accountID", saveEvent); // Save an event
+app.post("/savedEvents", saveEvent); // Save an event
 
 // Update/ Put
 app.put("/events/:id", editEvent); // Update a single event by ID
