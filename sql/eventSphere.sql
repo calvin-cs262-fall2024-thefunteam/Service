@@ -27,7 +27,7 @@ CREATE TABLE Events (
 -- Create SavedEvents table
 CREATE TABLE SavedEvents (
     accountID INTEGER REFERENCES Account(ID),
-    eventID INTEGER REFERENCES Events(ID),
+    eventID INTEGER REFERENCES Events(ID)
 );
 
 
