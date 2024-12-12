@@ -173,7 +173,7 @@ function readSavedEventsPerUser(req, res, next) {
 }
 
 function deleteSavedEvent(req, res, next) {
-  db.none("DELETE FROM SavedEvents WHERE accountID=${accountID} AND eventID=${event.ID}", req.params)
+  db.none("DELETE FROM SavedEvents WHERE accountID=${accountID} AND eventID=${eventID}", req.params)
     .then(() => res.status(200).send({ message: "Event unsaved successfully." }))
     .catch(next);
 }
