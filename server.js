@@ -21,11 +21,12 @@ app.get("/", (req, res) => res.send("Hello, CS 262 funteam service!"));
 //Read/ Get
 app.get("/users", readUsers); // Retrieve all users
 app.get("/events", readEvents); // Retrieve all events
-app.get("/events/:id", readEvent); // Retrieve a single event by ID
+app.get("/events/:id", readEvent); // Retrieve event by ID
 app.get("/users/:Accountname/:password", login); // Login
-app.get("/savedEvents/:accountID", readSavedEventsPerUser); // Retrieve all saved events for a user
 app.get("/savedEvents", readSavedEvents); // Retrieve all saved events
+
 app.get("/users/:accountID/events", readEventsPerUser); // Retrieve all events for a user
+app.get("/savedEvents/:accountID", readSavedEventsPerUser); // Retrieve all saved events for a user
 
 //Create/ Post
 app.post("/users", createUser); // Create a new user
@@ -163,16 +164,24 @@ function readSavedEvents(req, res, next) {
     .catch(next);
 }
 
+// function readSavedEventsPerUser(req, res, next) {
+//   db.manyOrNone(
+//     "SELECT Events.* FROM SavedEvents JOIN Events ON SavedEvents.eventID = Events.ID WHERE SavedEvents.accountID=${accountID}",
+//   )
+//     .then((data) => returnDataOr404(res, data))
+//     .catch(next);
+// }
+
 function readSavedEventsPerUser(req, res, next) {
   db.manyOrNone(
-    "SELECT Events.* FROM SavedEvents JOIN Events ON SavedEvents.eventID = Events.ID WHERE SavedEvents.accountID=${accountID}",
+    "SELECT * From SavedEvents WHERE SavedEvents.accountID=${accountID}",
   )
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
 
 function readEventsPerUser(req, res, next) {
-  db.manyOrNone("SELECT * From Events WHERE organizerid=${accountID}")
+  db.manyOrNone("SELECT * From Events WHERE Events.organizerID=${accountID}")
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
