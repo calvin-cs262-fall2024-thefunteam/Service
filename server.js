@@ -30,6 +30,8 @@ app.get("/savedEvents/:accountID", readSavedEventsPerUser); // Retrieve all save
 
 app.get("/savedEvents", readSavedEvents);
 
+app.get("/users/evnets/:accountID", readEventsPerUser); // Retrieve all events for a user
+
 //Create/ Post
 app.post("/users", createUser);
 app.post("/events", createEvent);
@@ -168,8 +170,14 @@ function readSavedEvents(req, res, next) {
 
 function readSavedEventsPerUser(req, res, next) {
   db.manyOrNone(
-    "SELECT Events.* FROM SavedEvents JOIN Events ON SavedEvents.eventID = Events.ID WHERE SavedEvents.accountID=${accountID}",
+    "SELECT Events * FROM SavedEvents JOIN Events ON SavedEvents.eventID = Events.ID WHERE SavedEvents.accountID=${accountID}",
   )
+    .then((data) => returnDataOr404(res, data))
+    .catch(next);
+}
+
+function readEventsPerUser(req, res, next) {
+  db.manyOrNone("SELECT * From Events WHERE organizerid=${accountID}")
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
