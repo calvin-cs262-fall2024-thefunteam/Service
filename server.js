@@ -164,20 +164,20 @@ function readSavedEvents(req, res, next) {
     .catch(next);
 }
 
-// function readSavedEventsPerUser(req, res, next) {
-//   db.manyOrNone(
-//     "SELECT Events.* FROM SavedEvents JOIN Events ON SavedEvents.eventID = Events.ID WHERE SavedEvents.accountID=${accountID}",
-//   )
-//     .then((data) => returnDataOr404(res, data))
-//     .catch(next);
-// }
-
 function readSavedEventsPerUser(req, res, next) {
   db.manyOrNone(
-    "SELECT * From SavedEvents WHERE accountID=${accountID}", req.params)
+    "SELECT Events.* FROM SavedEvents JOIN Events ON SavedEvents.eventID = Events.ID WHERE SavedEvents.accountID=${accountID}",
+  )
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
+
+// function readSavedEventsPerUser(req, res, next) {
+//   db.manyOrNone(
+//     "SELECT * From SavedEvents WHERE accountID=${accountID}", req.params)
+//     .then((data) => returnDataOr404(res, data))
+//     .catch(next);
+// }
 
 function readEventsPerUser(req, res, next) {
   db.manyOrNone("SELECT * From Events WHERE Events.organizerID=${accountID}", req.params)
