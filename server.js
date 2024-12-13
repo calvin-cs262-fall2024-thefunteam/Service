@@ -167,7 +167,13 @@ function readSavedEvents(req, res, next) {
 }
 
 function readSavedEventsPerUser(req, res, next) {
-  db.manyOrNone("SELECT * FROM SavedEvents WHERE accountID=${accountID}", req.params)
+  db.manyOrNone(
+    `SELECT Events.* 
+     FROM SavedEvents 
+     JOIN Events ON SavedEvents.eventID = Events.ID 
+     WHERE SavedEvents.accountID = ${accountID}`,
+    req.params
+  )
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
@@ -177,3 +183,4 @@ function deleteSavedEvent(req, res, next) {
     .then(() => res.status(200).send({ message: "Event unsaved successfully." }))
     .catch(next);
 }
+
