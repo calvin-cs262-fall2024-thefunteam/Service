@@ -174,14 +174,13 @@ function readSavedEvents(req, res, next) {
 
 function readSavedEventsPerUser(req, res, next) {
   db.manyOrNone(
-    "SELECT * From SavedEvents WHERE SavedEvents.accountID=${accountID}",
-  )
+    "SELECT * From SavedEvents WHERE accountID=${accountID}", req.params)
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
 
 function readEventsPerUser(req, res, next) {
-  db.manyOrNone("SELECT * From Events WHERE Events.organizerID=${accountID}")
+  db.manyOrNone("SELECT * From Events WHERE Events.organizerID=${accountID}", req.params)
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
