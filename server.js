@@ -25,8 +25,8 @@ app.get("/events/:id", readEvent); // Retrieve event by ID
 app.get("/users/:Accountname/:password", login); // Login
 app.get("/savedEvents", readSavedEvents); // Retrieve all saved events
 
-app.get("/users/:accountID/events", readEventsPerUser); // Retrieve all events for a user
-app.get("/savedEvents/:accountID", readSavedEventsPerUser); // Retrieve all saved events for a user
+app.get("/users/:accountID/events", getEventsByOrganizerID); // Retrieve all events for a user
+app.get("/savedEvents/:accountID", getSavedEventsByAccountID ); // Retrieve all saved events for a user
 
 //Create/ Post
 app.post("/users", createUser); // Create a new user
@@ -164,23 +164,23 @@ function readSavedEvents(req, res, next) {
     .catch(next);
 }
 
-function readSavedEventsPerUser(req, res, next) {
-  db.manyOrNone(
-    "SELECT Events.* FROM SavedEvents JOIN Events ON SavedEvents.eventID = Events.ID WHERE SavedEvents.accountID=${accountID}",
-  )
+function getEventsByOrganizerID(req, res, next) {
+  const { organizerID } = req.params;
+
+  db.manyOrNone("SELECT * FROM Events WHERE organizerID = $1", [organizerID])
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
 
-// function readSavedEventsPerUser(req, res, next) {
-//   db.manyOrNone(
-//     "SELECT * From SavedEvents WHERE accountID=${accountID}", req.params)
-//     .then((data) => returnDataOr404(res, data))
-//     .catch(next);
-// }
-
-function readEventsPerUser(req, res, next) {
-  db.manyOrNone("SELECT * From Events WHERE Events.organizerID=${accountID}", req.params)
+function getSavedEventsByAccountID(req, res, next) {
+  const { accountID } = req.params;
+  const query = `
+    SELECT e.* 
+    FROM SavedEvents s
+    INNER JOIN Events e ON s.eventID = e.id
+    WHERE s.accountID = $1
+  `;
+  db.manyOrNone(query, [accountID])
     .then((data) => returnDataOr404(res, data))
     .catch(next);
 }
