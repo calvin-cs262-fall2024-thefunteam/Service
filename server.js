@@ -25,7 +25,7 @@ app.get("/events/:id", readEvent); // Retrieve event by ID
 app.get("/users/:Accountname/:password", login); // Login
 app.get("/savedEvents", readSavedEvents); // Retrieve all saved events
 
-app.get("/users/:accountID/events", getEventsByOrganizerID); // Retrieve all events for a user
+app.get("/users/events/:organizerID", getEventsByOrganizerID); // Retrieve all events for a user
 app.get("/savedEvents/:accountID", getSavedEventsByAccountID ); // Retrieve all saved events for a user
 
 //Create/ Post
