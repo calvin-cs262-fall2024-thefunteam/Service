@@ -36,9 +36,9 @@ GRANT SELECT ON Events TO public;
 GRANT SELECT ON SavedEvents TO public;
 
 -- Insert sample Accounts
-INSERT INTO Account (Accountname, password, name) VALUES ('john_doe', 'password123', 'John Doe');
-INSERT INTO Account (Accountname, password, name) VALUES ('jane_smith', 'password456', 'Jane Smith');
-INSERT INTO Account (Accountname, password, name) VALUES ('alice_jones', 'password789', 'Alice Jones');
+INSERT INTO Account (Accountname, password, name) VALUES ('john_doe', 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f', 'John Doe');
+INSERT INTO Account (Accountname, password, name) VALUES ('jane_smith', 'c6ba91b90d922e159893f46c387e5dc1b3dc5c101a5a4522f03b987177a24a91', 'Jane Smith');
+INSERT INTO Account (Accountname, password, name) VALUES ('alice_jones', '5efc2b017da4f7736d192a74dde5891369e0685d4d38f2a455b6fcdab282df9c', 'Alice Jones');
 
 -- Insert sample Events
 -- Insert more diverse sample events
