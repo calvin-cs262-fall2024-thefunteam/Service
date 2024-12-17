@@ -17,7 +17,6 @@ CREATE TABLE Events (
     name VARCHAR(255) NOT NULL,
     organizer VARCHAR(255) NOT NULL,
     date DATE NOT NULL,
-    time TIME not NULL,
     description TEXT NOT NULL,
     tagsArray INTEGER[] DEFAULT '{}',
     location VARCHAR(255) NOT NULL,
