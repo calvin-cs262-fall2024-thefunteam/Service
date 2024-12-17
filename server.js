@@ -141,7 +141,7 @@ function deleteUser(req, res, next) {
 // Create user
 function createUser(req, res, next) {
   db.none(
-    "INSERT INTO Account(Accountname, password, name, salt) VALUES(${Accountname}, ${password}, ${name}, ${salt})",
+    "INSERT INTO Account(Accountname, password, name) VALUES(${Accountname}, ${password}, ${name})",
     req.body
   )
     .then(() => res.status(201).send({ message: "User created successfully." }))
